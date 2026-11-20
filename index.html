@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#090d16" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NO VETU" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <title>NO VETU — Mini Militia Random Spin &amp; Teams</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at top center, #111c33 0%, #090d16 60%);
+      color: #f1f5f9;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+    .app-shell {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      width: 100%;
+      max-width: 512px;
+      background: rgba(9, 13, 22, 0.92);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+    }
+    @media (min-width: 640px) {
+      .app-shell {
+        border-left: 1px solid rgba(30, 41, 59, 0.85);
+        border-right: 1px solid rgba(30, 41, 59, 0.85);
+      }
+    }
+    .glass-bar {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.85);
+      padding: 12px 16px;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      object-fit: cover;
+      box-shadow: 0 8px 16px rgba(245, 158, 11, 0.16);
+    }
+    .brand-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+    .badge-mini {
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #34d399;
+    }
+    .brand-sub {
+      margin: 2px 0 0;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .tagline-pill {
+      flex-shrink: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 158, 11, 0.42);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fcd34d;
+      white-space: nowrap;
+    }
+
+    main {
+      flex: 1;
+      padding: 16px 16px 96px;
+    }
+    .section-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hidden { display: none !important; }
+
+    .card {
+      border-radius: 16px;
+      border: 1px solid #1e293b;
+      background: rgba(15, 23, 42, 0.82);
+      padding: 16px;
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .card-sub {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    .count-pill {
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .pill-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+    }
+    .pill-cyan {
+      background: rgba(6, 182, 212, 0.15);
+      color: #22d3ee;
+    }
+
+    .chip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .chip {
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+      background: rgba(2, 6, 23, 0.65);
+      color: #94a3b8;
+      padding: 10px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .chip:active { transform: scale(0.95); }
+    .chip.active-emerald {
+      border-color: rgba(16, 185, 129, 0.72);
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+    }
+    .chip.active-cyan {
+      border-color: rgba(34, 211, 238, 0.72);
+      background: rgba(6, 182, 212, 0.16);
+      color: #a5f3fc;
+    }
+
+    .divider-row {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(30, 41, 59, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary {
+      border-radius: 8px;
+      background: #1e293b;
+      color: #cbd5e1;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+    .btn-secondary:active { transform: scale(0.95); }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      color: #020617;
+      padding: 9px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.22);
+      transition: transform 0.12s ease;
+    }
+    .btn-primary:active { transform: scale(0.96); }
+    .btn-primary-cyan {
+      flex: 1;
+      background: linear-gradient(90deg, #22d3ee, #34d399);
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.22);
+    }
+
+    .range-badge {
+      border-radius: 8px;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      background: rgba(6, 182, 212, 0.12);
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #67e8f9;
+      white-space: nowrap;
+    }
+    .btn-copy {
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.16);
+      color: #34d399;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .btn-copy:active { transform: scale(0.95); }
+    .btn-copy-solid {
+      border-radius: 10px;
+      background: #10b981;
+      color: #020617;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .btn-copy-solid:active { transform: scale(0.95); }
+
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .empty-box {
+      border-radius: 12px;
+      border: 1px dashed #1e293b;
+      padding: 24px 12px;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .spin-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 12px;
+      border: 1px solid rgba(30, 41, 59, 0.9);
+      background: rgba(2, 6, 23, 0.72);
+      padding: 10px 14px;
+      animation: popIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .spin-row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .num-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(16, 185, 129, 0.16);
+      color: #6ee7b7;
+    }
+    .num-badge.first {
+      background: #fbbf24;
+      color: #020617;
+    }
+    .player-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .slot-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .presets-section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(30, 41, 59, 0.85);
+    }
+    .presets-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .presets-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+    .presets-note {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .presets-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .preset-btn {
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: rgba(30, 41, 59, 0.85);
+      color: #cbd5e1;
+      padding: 6px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      transition: transform 0.12s ease;
+    }
+    .preset-btn:active { transform: scale(0.95); }
+    .preset-btn.active {
+      border-color: #34d399;
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .team-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 16px;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      background: rgba(6, 182, 212, 0.12);
+      padding: 12px 16px;
+    }
+    .team-banner-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #22d3ee;
+    }
+    .team-banner-title {
+      margin-top: 2px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .team-card {
+      border-radius: 16px;
+      border: 1px solid #334155;
+      background: rgba(15, 23, 42, 0.88);
+      padding: 14px;
+      animation: popIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .team-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .team-badge {
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .team-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .member-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 10px;
+      background: rgba(2, 6, 23, 0.76);
+      padding: 8px 10px;
+    }
+    .member-idx {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .member-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 6 Distinct Team Color Themes */
+    .t-emerald { border-color: rgba(16, 185, 129, 0.45); }
+    .t-emerald .team-badge { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+    .t-cyan { border-color: rgba(6, 182, 212, 0.45); }
+    .t-cyan .team-badge { background: rgba(6, 182, 212, 0.2); color: #67e8f9; }
+    .t-amber { border-color: rgba(245, 158, 11, 0.45); }
+    .t-amber .team-badge { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+    .t-rose { border-color: rgba(244, 63, 94, 0.45); }
+    .t-rose .team-badge { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
+    .t-violet { border-color: rgba(139, 92, 246, 0.45); }
+    .t-violet .team-badge { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; }
+    .t-sky { border-color: rgba(14, 165, 233, 0.45); }
+    .t-sky .team-badge { background: rgba(14, 165, 233, 0.2); color: #7dd3fc; }
+
+    .footer {
+      padding: 24px 0 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 500;
+      color: #64748b;
+    }
+    .footer strong {
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 512px;
+      z-index: 40;
+      border-top: 1px solid rgba(30, 41, 59, 0.92);
+      padding: 8px 12px;
+    }
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .tier-block {
+      margin-bottom: 10px;
+    }
+    .tier-block:last-child {
+      margin-bottom: 0;
+    }
+    .tier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .tier-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tier-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .tier-desc {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .rank-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .rank-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      border-radius: 11px;
+      border: 1px solid #1e293b;
+      background: rgba(2, 6, 23, 0.65);
+      color: #94a3b8;
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .rank-chip:active { transform: scale(0.96); }
+    .rank-chip-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .rank-chip-pt {
+      flex-shrink: 0;
+      border-radius: 6px;
+      background: rgba(30, 41, 59, 0.9);
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #cbd5e1;
+    }
+    .rank-chip.active-amber {
+      border-color: rgba(251, 191, 36, 0.72);
+      background: rgba(245, 158, 11, 0.15);
+      color: #fde68a;
+    }
+    .rank-chip.active-amber .rank-chip-pt {
+      background: rgba(245, 158, 11, 0.25);
+      color: #fcd34d;
+    }
+    .rank-chip-wrap {
+      display: flex;
+      align-items: stretch;
+      gap: 4px;
+    }
+    .rank-chip-wrap .rank-chip {
+      flex: 1;
+      min-width: 0;
+    }
+    .fire-btn {
+      width: 32px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid #1e293b;
+      background: rgba(2, 6, 23, 0.65);
+      font-size: 13px;
+      opacity: 0.42;
+      filter: grayscale(1);
+      transition: transform 0.12s ease, opacity 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .fire-btn:active { transform: scale(0.92); }
+    .fire-btn.on-fire {
+      opacity: 1;
+      filter: none;
+      border-color: rgba(249, 115, 22, 0.85);
+      background: rgba(249, 115, 22, 0.22);
+      box-shadow: 0 0 12px rgba(249, 115, 22, 0.28);
+    }
+    .prime-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 5px;
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.25));
+      border: 1px solid rgba(52, 211, 153, 0.65);
+      padding: 1px 5px;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #6ee7b7;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .king-gold {
+      display: inline-flex;
+      align-items: center;
+      margin-left: 4px;
+      font-size: 13px;
+      line-height: 1;
+      filter: drop-shadow(0 0 5px rgba(251, 191, 36, 0.65));
+    }
+    .king-gabbar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 4px;
+      border-radius: 5px;
+      background: rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(34, 211, 238, 0.55);
+      padding: 0 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #67e8f9;
+      line-height: 1.3;
+    }
+    .king-predator {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 4px;
+      border-radius: 5px;
+      background: rgba(244, 63, 94, 0.2);
+      border: 1px solid rgba(251, 113, 133, 0.55);
+      padding: 0 4px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #fda4af;
+      line-height: 1.3;
+    }
+    .fire-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      border-radius: 6px;
+      background: rgba(249, 115, 22, 0.22);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      padding: 1px 5px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fdba74;
+    }
+    .fire-hint-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      background: rgba(249, 115, 22, 0.08);
+      border: 1px solid rgba(249, 115, 22, 0.22);
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #fdba74;
+    }
+    .btn-clear-fire {
+      border-radius: 6px;
+      background: rgba(249, 115, 22, 0.2);
+      color: #fed7aa;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .btn-primary-amber {
+      flex: 1;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.22);
+    }
+    .pill-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+    }
+    .rank-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(245, 158, 11, 0.38);
+      background: rgba(245, 158, 11, 0.12);
+      padding: 12px 16px;
+    }
+    .rank-banner-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #fbbf24;
+    }
+    .score-base-bar {
+      margin-bottom: 10px;
+      border-radius: 9px;
+      background: rgba(2, 6, 23, 0.72);
+      border: 1px solid rgba(51, 65, 85, 0.65);
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .score-base-bar strong {
+      color: #f8fafc;
+      font-weight: 800;
+    }
+    .rank-member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rank-member-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 10px;
+      background: rgba(2, 6, 23, 0.76);
+      padding: 8px 10px;
+    }
+    .rank-member-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+    .tier-pill {
+      flex-shrink: 0;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .tp-1 { background: rgba(245, 158, 11, 0.22); color: #fcd34d; }
+    .tp-2 { background: rgba(6, 182, 212, 0.22); color: #67e8f9; }
+    .tp-3 { background: rgba(139, 92, 246, 0.22); color: #c4b5fd; }
+    .tp-4 { background: rgba(244, 63, 94, 0.22); color: #fda4af; }
+    .pt-badge {
+      flex-shrink: 0;
+      border-radius: 6px;
+      background: rgba(30, 41, 59, 0.95);
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fde68a;
+    }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 12px;
+      padding: 10px 6px;
+      font-size: 11px;
+      white-space: nowrap;
+      font-weight: 700;
+      color: #94a3b8;
+      transition: transform 0.12s ease, background 0.15s ease, color 0.15s ease;
+    }
+    .nav-btn:active { transform: scale(0.96); }
+    .nav-btn.active {
+      background: rgba(16, 185, 129, 0.14);
+      color: #34d399;
+    }
+
+    .toast {
+      pointer-events: none;
+      position: fixed;
+      left: 50%;
+      top: 68px;
+      transform: translate(-50%, 8px);
+      z-index: 50;
+      border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      background: rgba(15, 23, 42, 0.96);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #6ee7b7;
+      opacity: 0;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.45);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.94); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .install-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(16, 185, 129, 0.55);
+      background: rgba(16, 185, 129, 0.18);
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #6ee7b7;
+      white-space: nowrap;
+    }
+    .install-btn:active { transform: scale(0.95); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sticky Top Header -->
+    <header class="glass-bar header">
+      <div class="header-row">
+        <div class="brand">
+          <img src="data:image/jpeg;base64,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" alt="Mini Militia Logo" class="brand-logo" />
+          <div>
+            <div class="brand-title-row">
+              <h1 class="brand-title">NO VETU</h1>
+              <span class="badge-mini">Mini Militia</span>
+            </div>
+            <p class="brand-sub">Random Spin &amp; Random Team Maker</p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;"><button id="btnInstallPwa" type="button" class="install-btn hidden">Install</button><span class="tagline-pill">No More HunkyPunky</span></div>
+      </div>
+    </header>
+
+    <!-- Main Scrollable Content -->
+    <main>
+      <!-- ==================== TAB 1: RANDOM SPIN ==================== -->
+      <section id="view-spin" class="section-stack">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Select Present Players</h2>
+              <p class="card-sub">Choose who is playing today (max 12)</p>
+            </div>
+            <span id="spinCountBadge" class="count-pill pill-emerald">7 / 12 Max</span>
+          </div>
+
+          <div id="spinPlayerChips" class="chip-grid"></div>
+
+          <div class="divider-row">
+            <div class="btn-group">
+              <button id="btnSpinSelectAll" type="button" class="btn-secondary">Max 12</button>
+              <button id="btnSpinClear" type="button" class="btn-secondary">Clear</button>
+            </div>
+            <button id="btnRunRandomSpin" type="button" class="btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/></svg>
+              Spin Now
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h3 class="card-title">Random Number List</h3>
+              <p id="spinResultSubtitle" class="card-sub">Tap Spin Now to assign 1 to N</p>
+            </div>
+            <div class="btn-group">
+              <span id="spinRangeBadge" class="range-badge">Spin: 1 – 7</span>
+              <button id="btnCopySpin" type="button" class="btn-copy">Copy</button>
+            </div>
+          </div>
+          <div id="spinResultList" class="result-list"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: RANDOM TEAMS ==================== -->
+      <section id="view-teams" class="section-stack hidden">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Select Match Players</h2>
+              <p class="card-sub">Pick up to 12 players for random teams</p>
+            </div>
+            <span id="teamCountBadge" class="count-pill pill-cyan">8 / 12 Max</span>
+          </div>
+
+          <div id="teamPlayerChips" class="chip-grid"></div>
+
+          <div class="presets-section">
+            <div class="presets-head">
+              <span class="presets-title">Team Combination</span>
+              <span class="presets-note">Auto-fits player count</span>
+            </div>
+            <div id="splitPresets" class="presets-wrap"></div>
+          </div>
+
+          <div class="divider-row">
+            <button id="btnTeamSelectAll12" type="button" class="btn-secondary">Max 12</button>
+            <button id="btnTeamClear" type="button" class="btn-secondary">Clear</button>
+            <button id="btnGenerateTeams" type="button" class="btn-primary btn-primary-cyan">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              Make Random Teams
+            </button>
+          </div>
+        </div>
+
+        <div id="teamResultsContainer" class="section-stack hidden">
+          <div class="team-banner">
+            <div>
+              <div class="team-banner-kicker">Random Split</div>
+              <div id="teamSplitTitle" class="team-banner-title">—</div>
+            </div>
+            <button id="btnCopyTeams" type="button" class="btn-copy-solid">Copy Teams</button>
+          </div>
+          <div id="teamCardsGrid" class="section-stack"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: RANK WISE TEAM BALANCE ==================== -->
+      <section id="view-rank" class="section-stack hidden">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2 class="card-title">Rank-Wise Team Balance</h2>
+              <p class="card-sub">Tier-based fair teams (max 12 players)</p>
+            </div>
+            <span id="rankCountBadge" class="count-pill pill-amber">8 / 12 Max</span>
+          </div>
+
+          <div class="fire-hint-row">
+            <span>Tap 🔥 beside anyone playing hot today</span>
+            <button id="btnClearFire" type="button" class="btn-clear-fire hidden">Clear 🔥</button>
+          </div>
+
+          <div id="rankTierGroups"></div>
+
+          <div class="presets-section">
+            <div class="presets-head">
+              <span class="presets-title">Team Combination</span>
+              <span class="presets-note">Balanced across all tiers</span>
+            </div>
+            <div id="rankSplitPresets" class="presets-wrap"></div>
+          </div>
+
+          <div class="divider-row">
+            <button id="btnRankMax12" type="button" class="btn-secondary">Max 12</button>
+            <button id="btnRankClear" type="button" class="btn-secondary">Clear</button>
+            <button id="btnGenerateRankTeams" type="button" class="btn-primary btn-primary-amber">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Balance Teams
+            </button>
+          </div>
+        </div>
+
+        <div id="rankResultsContainer" class="section-stack hidden">
+          <div class="rank-banner">
+            <div>
+              <div class="rank-banner-kicker">Tier-Balanced Split</div>
+              <div id="rankSplitTitle" class="team-banner-title">—</div>
+            </div>
+            <button id="btnCopyRankTeams" type="button" class="btn-copy-solid">Copy Teams</button>
+          </div>
+          <div id="rankCardsGrid" class="section-stack"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        Developed by <strong>Shenon</strong>
+      </footer>
+    </main>
+
+    <!-- Fixed Bottom Navigation -->
+    <nav class="glass-bar bottom-nav">
+      <div class="nav-grid">
+        <button data-tab="spin" type="button" class="nav-btn active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <span>Random Spin</span>
+        </button>
+        <button data-tab="teams" type="button" class="nav-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Teams</span>
+        </button>
+        <button data-tab="rank" type="button" class="nav-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>Rank Balance</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- In-page Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    (function () {
+      const PLAYERS = [
+        'Azzazzil', 'Gabbar', 'Mistake', 'Predator', 'Shenon',
+        'Shoktiman', 'Master J', 'John Wick', 'Boss',
+        'Ironman', 'Katappa', 'Avatar', 'Veer', 'Roni'
+      ];
+
+      // Practical Tier & Intra-Tier Priority (no numeric ratings shown in UI)
+      const PLAYER_DATA = {
+        'Azzazzil':  { tier: 1, label: 'Apex',    order: 1 },
+        'Gabbar':    { tier: 1, label: 'Apex',    order: 2 },
+        'Mistake':   { tier: 1, label: 'Apex',    order: 3 },
+        'Predator':  { tier: 1, label: 'Apex',    order: 4 },
+        'Master J':  { tier: 2, label: 'Striker', order: 1 },
+        'Shenon':    { tier: 2, label: 'Striker', order: 2 },
+        'Shoktiman': { tier: 2, label: 'Striker', order: 3 },
+        'John Wick': { tier: 2, label: 'Striker', order: 4 },
+        'Ironman':   { tier: 3, label: 'Trooper', order: 1 },
+        'Avatar':    { tier: 3, label: 'Trooper', order: 2 },
+        'Boss':      { tier: 3, label: 'Trooper', order: 3 },
+        'Veer':      { tier: 3, label: 'Trooper', order: 4 },
+        'Katappa':   { tier: 4, label: 'Rookie',  order: 1 },
+        'Roni':      { tier: 4, label: 'Rookie',  order: 2 }
+      };
+
+      const TIER_META = [
+        { tier: 1, title: 'Apex • Top Killers',    desc: 'Main Carries',     color: '#fbbf24', short: 'Apex' },
+        { tier: 2, title: 'Strikers • Wildcards',  desc: 'Clutch / Avg',     color: '#22d3ee', short: 'Striker' },
+        { tier: 3, title: 'Troopers • Support',    desc: 'Rare Pop-Off',     color: '#a78bfa', short: 'Trooper' },
+        { tier: 4, title: 'Rookies • Cover Needed', desc: 'Needs Apex Carry', color: '#fb7185', short: 'Rookie' }
+      ];
+
+      function formatNameHtml(name) {
+        if (name === 'Azzazzil') return `${name}<span class="king-gold" title="King">👑</span>`;
+        if (name === 'Mistake') return `${name}<span class="prime-tag">Prime</span>`;
+        if (name === 'Gabbar') return `${name}<span class="king-gabbar" title="Royal King">♛</span>`;
+        if (name === 'Predator') return `${name}<span class="king-predator" title="Shadow King">♚</span>`;
+        return name;
+      }
+
+      function formatNameText(name) {
+        if (name === 'Azzazzil') return `${name} 👑`;
+        if (name === 'Mistake') return `${name} (Prime)`;
+        if (name === 'Gabbar') return `${name} ♛`;
+        if (name === 'Predator') return `${name} ♚`;
+        return name;
+      }
+
+      const SPLIT_MAP = {
+        2: [{ key: '1-1', label: '1 vs 1', sizes: [1, 1] }],
+        3: [{ key: '2-1', label: '2 vs 1', sizes: [2, 1] }],
+        4: [{ key: '2-2', label: '2 vs 2', sizes: [2, 2] }],
+        5: [
+          { key: '2-2-1', label: '2 vs 2 vs 1', sizes: [2, 2, 1] },
+          { key: '2-3', label: '2 vs 3', sizes: [2, 3] }
+        ],
+        6: [
+          { key: '3-3', label: '3 vs 3', sizes: [3, 3] },
+          { key: '2-2-2', label: '2 vs 2 vs 2', sizes: [2, 2, 2] }
+        ],
+        7: [
+          { key: '3-3-1', label: '3 vs 3 vs 1', sizes: [3, 3, 1] },
+          { key: '2-2-2-1', label: '2 vs 2 vs 2 vs 1', sizes: [2, 2, 2, 1] },
+          { key: '4-3', label: '4 vs 3', sizes: [4, 3] }
+        ],
+        8: [
+          { key: '4-4', label: '4 vs 4', sizes: [4, 4] },
+          { key: '2-2-2-2', label: '2 vs 2 vs 2 vs 2', sizes: [2, 2, 2, 2] },
+          { key: '3-3-2', label: '3 vs 3 vs 2', sizes: [3, 3, 2] }
+        ],
+        9: [
+          { key: '3-3-3', label: '3 vs 3 vs 3', sizes: [3, 3, 3] },
+          { key: '5-4', label: '5 vs 4', sizes: [5, 4] }
+        ],
+        10: [
+          { key: '5-5', label: '5 vs 5', sizes: [5, 5] },
+          { key: '2-2-2-2-2', label: '2 vs 2 vs 2 vs 2 vs 2', sizes: [2, 2, 2, 2, 2] }
+        ],
+        11: [
+          { key: '5-6', label: '5 vs 6', sizes: [5, 6] },
+          { key: '2-2-2-2-2-1', label: '2 vs 2 vs 2 vs 2 vs 2 vs 1', sizes: [2, 2, 2, 2, 2, 1] },
+          { key: '4-4-3', label: '4 vs 4 vs 3', sizes: [4, 4, 3] },
+          { key: '3-3-3-2', label: '3 vs 3 vs 3 vs 2', sizes: [3, 3, 3, 2] }
+        ],
+        12: [
+          { key: '6-6', label: '6 vs 6', sizes: [6, 6] },
+          { key: '2-2-2-2-2-2', label: '2 vs 2 vs 2 vs 2 vs 2 vs 2', sizes: [2, 2, 2, 2, 2, 2] },
+          { key: '4-4-4', label: '4 vs 4 vs 4', sizes: [4, 4, 4] },
+          { key: '3-3-3-3', label: '3 vs 3 vs 3 vs 3', sizes: [3, 3, 3, 3] }
+        ]
+      };
+
+      const state = {
+        activeTab: 'spin',
+        spinOrder: [],
+        spinSelected: new Set(),
+        spinResults: [],
+        spinHistory: [],
+        lastSpinMax12Key: '',
+        spinTimer: null,
+        teamOrder: [],
+        teamSelected: new Set(),
+        selectedSplitKey: '4-4',
+        generatedTeams: null,
+        teamHistory: [],
+        lastTeamMax12Key: '',
+        teamTimer: null,
+        rankSelected: new Set(),
+        onFire: new Set(),
+        rankSplitKey: '4-4',
+        generatedRankTeams: null,
+        rankHistory: [],
+        lastRankMax12Key: '',
+        rankTimer: null
+      };
+
+      let toastTimer = null;
+
+      function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.classList.add('show');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.classList.remove('show'), 2000);
+      }
+
+      function copyText(text, successMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => fallbackCopy(text, successMsg));
+        } else {
+          fallbackCopy(text, successMsg);
+        }
+      }
+
+      function fallbackCopy(text, successMsg) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast(successMsg); } catch (e) { showToast('Copy failed'); }
+        document.body.removeChild(ta);
+      }
+
+      function cryptoRandomInt(max) {
+        if (max <= 1) return 0;
+        if (window.crypto && window.crypto.getRandomValues) {
+          const limit = Math.floor(0x100000000 / max) * max;
+          const buf = new Uint32Array(1);
+          let val;
+          do {
+            window.crypto.getRandomValues(buf);
+            val = buf[0];
+          } while (val >= limit);
+          return val % max;
+        }
+        return Math.floor(Math.random() * max);
+      }
+
+      function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+          const j = cryptoRandomInt(i + 1);
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+      }
+
+      function spinSignature(results) {
+        return results.slice().sort((a, b) => a.num - b.num).map(r => r.player).join('|');
+      }
+
+      function teamSignature(teams) {
+        return teams.map(m => m.slice().sort().join(',')).sort().join('||');
+      }
+
+      function generateUniqueSpin(chosen) {
+        const nums = chosen.map((_, i) => i + 1);
+        const lastSig = state.spinHistory[state.spinHistory.length - 1] || '';
+        let candidate = null;
+        let sig = '';
+
+        for (let attempt = 0; attempt < 40; attempt++) {
+          const randNums = shuffle(nums);
+          candidate = chosen.map((p, i) => ({ player: p, num: randNums[i] }));
+          sig = spinSignature(candidate);
+          if (!state.spinHistory.includes(sig)) break;
+        }
+
+        if (state.spinHistory.includes(sig) && chosen.length >= 2) {
+          for (let attempt = 0; attempt < 20; attempt++) {
+            const randNums = shuffle(nums);
+            const alt = chosen.map((p, i) => ({ player: p, num: randNums[i] }));
+            const altSig = spinSignature(alt);
+            if (altSig !== lastSig) {
+              candidate = alt;
+              sig = altSig;
+              break;
+            }
+          }
+        }
+
+        state.spinHistory.push(sig);
+        if (state.spinHistory.length > 6) state.spinHistory.shift();
+        return candidate;
+      }
+
+      function buildRandomSplit(pool, sizes) {
+        const shuffled = shuffle(pool);
+        const teams = [];
+        let cursor = 0;
+        sizes.forEach(sz => {
+          teams.push(shuffled.slice(cursor, cursor + sz));
+          cursor += sz;
+        });
+        return teams;
+      }
+
+      function generateUniqueTeams(pool, sizes) {
+        const lastSig = state.teamHistory[state.teamHistory.length - 1] || '';
+        let candidate = null;
+        let sig = '';
+
+        for (let attempt = 0; attempt < 60; attempt++) {
+          candidate = buildRandomSplit(pool, sizes);
+          sig = teamSignature(candidate);
+          if (!state.teamHistory.includes(sig)) break;
+        }
+
+        if (state.teamHistory.includes(sig)) {
+          for (let attempt = 0; attempt < 30; attempt++) {
+            const alt = buildRandomSplit(pool, sizes);
+            const altSig = teamSignature(alt);
+            if (altSig !== lastSig) {
+              candidate = alt;
+              sig = altSig;
+              break;
+            }
+          }
+        }
+
+        state.teamHistory.push(sig);
+        if (state.teamHistory.length > 6) state.teamHistory.shift();
+        return candidate;
+      }
+
+      function stopSpinTimer() {
+        if (state.spinTimer) { clearInterval(state.spinTimer); state.spinTimer = null; }
+      }
+
+      function stopTeamTimer() {
+        if (state.teamTimer) { clearInterval(state.teamTimer); state.teamTimer = null; }
+      }
+
+      // Pick 12 random players out of all players, avoiding immediate repeat of the same 12
+      function pickRandom12(lastKeyProp) {
+        let picked = shuffle(PLAYERS).slice(0, 12);
+        let key = picked.slice().sort().join(',');
+        for (let i = 0; i < 20 && key === state[lastKeyProp]; i++) {
+          picked = shuffle(PLAYERS).slice(0, 12);
+          key = picked.slice().sort().join(',');
+        }
+        state[lastKeyProp] = key;
+        return picked;
+      }
+
+      // Navigation
+      function switchTab(tab) {
+        state.activeTab = tab;
+        ['spin', 'teams', 'rank'].forEach(t => {
+          const sec = document.getElementById('view-' + t);
+          if (sec) sec.classList.toggle('hidden', t !== tab);
+        });
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.tab === tab);
+        });
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      // Tab 1: Random Spin
+      function renderSpinChips() {
+        const container = document.getElementById('spinPlayerChips');
+        document.getElementById('spinCountBadge').textContent = state.spinSelected.size + ' / 12 Max';
+        const rangeEl = document.getElementById('spinRangeBadge');
+        rangeEl.textContent = state.spinSelected.size >= 2 ? `Spin: 1 – ${state.spinSelected.size}` : 'Select 2+';
+
+        container.innerHTML = state.spinOrder.map(p => {
+          const active = state.spinSelected.has(p);
+          return `<button type="button" data-spin-player="${p}" class="chip ${active ? 'active-emerald' : ''}">${formatNameHtml(p)}</button>`;
+        }).join('');
+
+        container.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            stopSpinTimer();
+            const p = btn.dataset.spinPlayer;
+            if (state.spinSelected.has(p)) {
+              state.spinSelected.delete(p);
+            } else {
+              if (state.spinSelected.size >= 12) {
+                showToast('Max 12 players allowed!');
+                return;
+              }
+              state.spinSelected.add(p);
+            }
+            renderSpinChips();
+          });
+        });
+      }
+
+      function renderSpinResults(isAnimating) {
+        const list = document.getElementById('spinResultList');
+        const sub = document.getElementById('spinResultSubtitle');
+        if (!state.spinResults.length) {
+          sub.textContent = 'Select present players and tap Spin Now';
+          list.innerHTML = '<div class="empty-box">No spin result yet</div>';
+          return;
+        }
+        sub.textContent = isAnimating
+          ? 'Spinning random numbers...'
+          : `Generated 1 to ${state.spinResults.length} for present players`;
+
+        const items = state.spinResults.slice().sort((a, b) => a.num - b.num);
+        list.innerHTML = items.map((item, idx) => `
+          <div class="spin-row" style="animation-delay:${idx * 18}ms">
+            <div class="spin-row-left">
+              <span class="num-badge ${item.num === 1 ? 'first' : ''}">${item.num}</span>
+              <span class="player-name">${formatNameHtml(item.player)}</span>
+            </div>
+            <span class="slot-label">#${item.num}</span>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('btnSpinSelectAll').addEventListener('click', () => {
+        stopSpinTimer();
+        const picked = pickRandom12('lastSpinMax12Key');
+        state.spinSelected = new Set(picked);
+        state.spinOrder = shuffle(PLAYERS);
+        const out = PLAYERS.filter(p => !state.spinSelected.has(p));
+        renderSpinChips();
+        showToast(out.length ? `Random 12 picked! Out: ${out.join(', ')}` : 'Random 12 selected!');
+      });
+
+      document.getElementById('btnSpinClear').addEventListener('click', () => {
+        stopSpinTimer();
+        state.spinSelected.clear();
+        state.spinResults = [];
+        renderSpinChips();
+        renderSpinResults(false);
+      });
+
+      document.getElementById('btnRunRandomSpin').addEventListener('click', () => {
+        const chosen = Array.from(state.spinSelected);
+        if (chosen.length < 2) {
+          showToast('Select at least 2 players to spin');
+          return;
+        }
+        stopSpinTimer();
+        let ticks = 0;
+        const maxTicks = 9;
+        const nums = chosen.map((_, i) => i + 1);
+        const finalResult = generateUniqueSpin(chosen);
+
+        state.spinTimer = setInterval(() => {
+          ticks++;
+          if (ticks < maxTicks) {
+            const previewNums = shuffle(nums);
+            state.spinResults = chosen.map((p, i) => ({ player: p, num: previewNums[i] }));
+            renderSpinResults(true);
+          } else {
+            stopSpinTimer();
+            state.spinResults = finalResult;
+            state.spinOrder = shuffle(PLAYERS);
+            renderSpinChips();
+            renderSpinResults(false);
+            showToast(`Fresh spin 1–${chosen.length}!`);
+          }
+        }, 65);
+      });
+
+      document.getElementById('btnCopySpin').addEventListener('click', () => {
+        if (!state.spinResults.length) { showToast('Spin first to copy'); return; }
+        const sorted = state.spinResults.slice().sort((a, b) => a.num - b.num);
+        const text = `🎯 NO VETU Random Spin (1–${sorted.length})\n` +
+          sorted.map(r => `${r.num}. ${formatNameText(r.player)}`).join('\n');
+        copyText(text, 'Spin list copied for WhatsApp!');
+      });
+
+      // Tab 2: Random Teams
+      function renderTeamsTab() {
+        const chips = document.getElementById('teamPlayerChips');
+        document.getElementById('teamCountBadge').textContent = state.teamSelected.size + ' / 12 Max';
+
+        chips.innerHTML = state.teamOrder.map(p => {
+          const active = state.teamSelected.has(p);
+          return `<button type="button" data-team-player="${p}" class="chip ${active ? 'active-cyan' : ''}">${formatNameHtml(p)}</button>`;
+        }).join('');
+
+        chips.querySelectorAll('button').forEach(btn => {
+          btn.addEventListener('click', () => {
+            stopTeamTimer();
+            const p = btn.dataset.teamPlayer;
+            if (state.teamSelected.has(p)) {
+              state.teamSelected.delete(p);
+            } else {
+              if (state.teamSelected.size >= 12) {
+                showToast('Mini Militia max limit is 12 players!');
+                return;
+              }
+              state.teamSelected.add(p);
+            }
+            renderTeamsTab();
+          });
+        });
+
+        const presetsEl = document.getElementById('splitPresets');
+        const count = state.teamSelected.size;
+        const options = SPLIT_MAP[count] || [];
+        if (!options.length) {
+          presetsEl.innerHTML = '<span class="presets-note">Select 2 to 12 players to see combinations</span>';
+          state.selectedSplitKey = '';
+        } else {
+          if (!options.some(o => o.key === state.selectedSplitKey)) {
+            state.selectedSplitKey = options[0].key;
+          }
+          presetsEl.innerHTML = options.map(o => `
+            <button type="button" data-split="${o.key}" class="preset-btn ${o.key === state.selectedSplitKey ? 'active' : ''}">${o.label}</button>
+          `).join('');
+
+          presetsEl.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              stopTeamTimer();
+              state.selectedSplitKey = btn.dataset.split;
+              renderTeamsTab();
+            });
+          });
+        }
+      }
+
+      function renderGeneratedTeams() {
+        const container = document.getElementById('teamResultsContainer');
+        if (!state.generatedTeams) {
+          container.classList.add('hidden');
+          return;
+        }
+        container.classList.remove('hidden');
+
+        const { teams, splitLabel, playerCount } = state.generatedTeams;
+        document.getElementById('teamSplitTitle').textContent = `${splitLabel} (${playerCount} Players)`;
+
+        const themes = ['t-emerald', 't-cyan', 't-amber', 't-rose', 't-violet', 't-sky'];
+        const grid = document.getElementById('teamCardsGrid');
+        grid.innerHTML = teams.map((members, idx) => {
+          const isSolo = members.length === 1 && teams.some(x => x.length > 1);
+          const title = isSolo ? 'Solo Player' : `Team ${idx + 1}`;
+          return `
+            <div class="team-card ${themes[idx % themes.length]}">
+              <div class="team-card-head">
+                <span class="team-badge">${title}</span>
+                <span class="team-count">${members.length} player${members.length === 1 ? '' : 's'}</span>
+              </div>
+              <div class="member-grid">
+                ${members.map((name, i) => `
+                  <div class="member-item">
+                    <span class="member-idx">${i + 1}.</span>
+                    <span class="member-name">${formatNameHtml(name)}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('btnTeamSelectAll12').addEventListener('click', () => {
+        stopTeamTimer();
+        const picked = pickRandom12('lastTeamMax12Key');
+        state.teamSelected = new Set(picked);
+        state.teamOrder = shuffle(PLAYERS);
+        const out = PLAYERS.filter(p => !state.teamSelected.has(p));
+        renderTeamsTab();
+        showToast(out.length ? `Random 12 picked! Out: ${out.join(', ')}` : 'Random 12 selected!');
+      });
+
+      document.getElementById('btnTeamClear').addEventListener('click', () => {
+        stopTeamTimer();
+        state.teamSelected.clear();
+        state.generatedTeams = null;
+        renderTeamsTab();
+        renderGeneratedTeams();
+      });
+
+      document.getElementById('btnGenerateTeams').addEventListener('click', () => {
+        const count = state.teamSelected.size;
+        const options = SPLIT_MAP[count] || [];
+        const split = options.find(o => o.key === state.selectedSplitKey);
+        if (!split) {
+          showToast('Select 2 to 12 players first');
+          return;
+        }
+        stopTeamTimer();
+        const pool = Array.from(state.teamSelected);
+        const finalTeams = generateUniqueTeams(pool, split.sizes);
+        let ticks = 0;
+        const maxTicks = 8;
+
+        state.teamTimer = setInterval(() => {
+          ticks++;
+          state.generatedTeams = {
+            splitLabel: split.label,
+            playerCount: count,
+            teams: ticks < maxTicks ? buildRandomSplit(pool, split.sizes) : finalTeams
+          };
+          renderGeneratedTeams();
+          if (ticks >= maxTicks) {
+            stopTeamTimer();
+            state.teamOrder = shuffle(PLAYERS);
+            renderTeamsTab();
+            showToast(`Fresh ${split.label} teams ready!`);
+          }
+        }, 65);
+      });
+
+      document.getElementById('btnCopyTeams').addEventListener('click', () => {
+        if (!state.generatedTeams) return;
+        const { teams, splitLabel } = state.generatedTeams;
+        const lines = [`⚔️ NO VETU Random Teams (${splitLabel})`];
+        teams.forEach((members, i) => {
+          const isSolo = members.length === 1 && teams.some(x => x.length > 1);
+          const label = isSolo ? 'Solo' : `Team ${i + 1}`;
+          lines.push(`\n${label}:`);
+          members.forEach(name => lines.push(`• ${formatNameText(name)}`));
+        });
+        copyText(lines.join('\n'), 'Random teams copied for WhatsApp!');
+      });
+
+      function stopRankTimer() {
+        if (state.rankTimer) { clearInterval(state.rankTimer); state.rankTimer = null; }
+      }
+
+      // ==================== TAB 3: RANK-WISE TEAM BALANCE ====================
+      function renderRankTab() {
+        const container = document.getElementById('rankTierGroups');
+        document.getElementById('rankCountBadge').textContent = state.rankSelected.size + ' / 12 Max';
+
+        container.innerHTML = TIER_META.map(tm => {
+          const members = PLAYERS.filter(p => PLAYER_DATA[p].tier === tm.tier);
+          return `
+            <div class="tier-block">
+              <div class="tier-header">
+                <span class="tier-label" style="color:${tm.color}">
+                  <span class="tier-dot" style="background:${tm.color}"></span>
+                  ${tm.title}
+                </span>
+                <span class="tier-desc">${tm.desc}</span>
+              </div>
+              <div class="rank-chip-grid">
+                ${members.map(p => {
+                  const active = state.rankSelected.has(p);
+                  const hot = state.onFire.has(p);
+                  return `<div class="rank-chip-wrap">
+                    <button type="button" data-rank-player="${p}" class="rank-chip ${active ? 'active-amber' : ''}">
+                      <span class="rank-chip-name">${formatNameHtml(p)}</span>
+                    </button>
+                    <button type="button" data-fire-player="${p}" aria-label="Toggle On Fire for ${p}" class="fire-btn ${hot ? 'on-fire' : ''}">🔥</button>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const clearFireBtn = document.getElementById('btnClearFire');
+        if (clearFireBtn) {
+          clearFireBtn.classList.toggle('hidden', state.onFire.size === 0);
+          clearFireBtn.textContent = `Clear 🔥 (${state.onFire.size})`;
+        }
+
+        container.querySelectorAll('button[data-rank-player]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            stopRankTimer();
+            const p = btn.dataset.rankPlayer;
+            if (state.rankSelected.has(p)) {
+              state.rankSelected.delete(p);
+            } else {
+              if (state.rankSelected.size >= 12) {
+                showToast('Mini Militia max limit is 12 players!');
+                return;
+              }
+              state.rankSelected.add(p);
+            }
+            renderRankTab();
+          });
+        });
+
+        container.querySelectorAll('button[data-fire-player]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            stopRankTimer();
+            const p = btn.dataset.firePlayer;
+            if (state.onFire.has(p)) {
+              state.onFire.delete(p);
+              showToast(`${p} back to normal form`);
+            } else {
+              if (!state.rankSelected.has(p)) {
+                if (state.rankSelected.size >= 12) {
+                  showToast('Max 12 players — unselect someone first');
+                  return;
+                }
+                state.rankSelected.add(p);
+              }
+              state.onFire.add(p);
+              showToast(`${p} is 🔥 On Fire today!`);
+            }
+            renderRankTab();
+          });
+        });
+
+        const presetsEl = document.getElementById('rankSplitPresets');
+        const count = state.rankSelected.size;
+        const options = SPLIT_MAP[count] || [];
+        if (!options.length) {
+          presetsEl.innerHTML = '<span class="presets-note">Select 2 to 12 players to see combinations</span>';
+          state.rankSplitKey = '';
+        } else {
+          if (!options.some(o => o.key === state.rankSplitKey)) {
+            state.rankSplitKey = options[0].key;
+          }
+          presetsEl.innerHTML = options.map(o => `
+            <button type="button" data-rank-split="${o.key}" class="preset-btn ${o.key === state.rankSplitKey ? 'active' : ''}">${o.label}</button>
+          `).join('');
+
+          presetsEl.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+              stopRankTimer();
+              state.rankSplitKey = btn.dataset.rankSplit;
+              renderRankTab();
+            });
+          });
+        }
+      }
+
+      // True Mini Militia Death-Feed, Dangerous Duo & On-Fire Form Practical Balancer
+      function playerImpact(p, fireSet) {
+        // Internal net Kill + Survival (Death-Feed) impact (never shown as numeric rating)
+        const baseMap = {
+          'Azzazzil': 5.4,  // High kills + safest (lowest deaths), dominates all weapons
+          'Gabbar':   4.7,  // High kills, dies less than Mistake
+          'Mistake':  4.6,  // Almost Azzazzil-level kills, but dies more than Gabbar
+          'Predator': 4.0,  // Occasional huge pop-offs, low deaths, right behind top 3
+          'Master J': 3.4,  // Average kills & deaths
+          'Shenon':   3.4,  // Average kills & deaths
+          'Shoktiman': 2.9, // Average kills, usually more deaths than kills
+          'John Wick': 2.9, // Average kills, usually more deaths than kills
+          'Ironman':  2.9,  // Average kills, usually more deaths than kills
+          'Avatar':   2.3,  // More deaths than kills, occasional pop-off
+          'Boss':     2.2,  // More deaths than kills
+          'Veer':     2.1,  // More deaths than kills
+          'Katappa':  1.0,  // Lowest kills + high deaths
+          'Roni':     0.7   // Lowest kills + highest deaths
+        };
+        const base = baseMap[p] !== undefined ? baseMap[p] : 2.5;
+        const isHot = fireSet ? fireSet.has(p) : state.onFire.has(p);
+        // 🔥 On Fire gives a ~+0.85 boost (almost +1 full tier for today's hot streak)
+        return isHot ? Math.min(5.8, base + 0.85) : base;
+      }
+
+      // Dangerous Duo Hierarchy from real squad play:
+      // Primary Forbidden Duos (never pair if avoidable)
+      const PRIMARY_DANGEROUS_DUOS = [
+        ['Azzazzil', 'Gabbar'],
+        ['Gabbar', 'Mistake'],
+        ['Azzazzil', 'Mistake'],
+        ['Azzazzil', 'Predator']
+      ];
+      // Secondary Dangerous Duos (avoid when possible, preferred over Primary if 2-Apex is unavoidable)
+      const SECONDARY_DANGEROUS_DUOS = [
+        ['Predator', 'Gabbar'],
+        ['Predator', 'Mistake']
+      ];
+
+      function isMainKiller(p, fireSet) {
+        const isHot = fireSet ? fireSet.has(p) : state.onFire.has(p);
+        return PLAYER_DATA[p].tier === 1 || p === 'Master J' || p === 'Shenon' || (isHot && PLAYER_DATA[p].tier <= 3);
+      }
+
+      function isLowKill(p, fireSet) {
+        const isHot = fireSet ? fireSet.has(p) : state.onFire.has(p);
+        if (isHot && PLAYER_DATA[p].tier === 3) return false;
+        return PLAYER_DATA[p].tier === 4 || p === 'Avatar' || p === 'Boss' || p === 'Veer';
+      }
+
+      function evaluatePracticalSplit(teams, fireSet) {
+        let penalty = 0;
+        const multiTeams = teams.filter(t => t.length > 1);
+        const numTeams = teams.length;
+        const countTier = (team, tier) => team.filter(p => PLAYER_DATA[p].tier === tier).length;
+
+        // 1. Net Kill + Death-Feed Survival Impact parity across teams
+        if (multiTeams.length >= 2) {
+          const avgs = multiTeams.map(t => t.reduce((sum, p) => sum + playerImpact(p, fireSet), 0) / t.length);
+          const avgSpread = Math.max(...avgs) - Math.min(...avgs);
+          penalty += avgSpread * 55;
+
+          const sameSize = multiTeams.every(t => t.length === multiTeams[0].length);
+          if (sameSize) {
+            const totals = multiTeams.map(t => t.reduce((sum, p) => sum + playerImpact(p, fireSet), 0));
+            penalty += (Math.max(...totals) - Math.min(...totals)) * 12;
+          }
+        }
+
+        // 2. Dangerous Duo Enforcement (Primary vs Secondary)
+        if (multiTeams.length >= 2) {
+          multiTeams.forEach(t => {
+            PRIMARY_DANGEROUS_DUOS.forEach(([a, b]) => {
+              if (t.includes(a) && t.includes(b)) penalty += 95;
+            });
+            SECONDARY_DANGEROUS_DUOS.forEach(([a, b]) => {
+              if (t.includes(a) && t.includes(b)) penalty += 35;
+            });
+          });
+        }
+
+        // 3. Spread Apex (Tier 1) & 🔥 On Fire players evenly across teams
+        const apexCounts = teams.map(t => countTier(t, 1));
+        const apexDiff = Math.max(...apexCounts) - Math.min(...apexCounts);
+        if (apexDiff > 1) penalty += (apexDiff - 1) * 70;
+
+        const hotCounts = multiTeams.map(t => t.filter(p => (fireSet ? fireSet.has(p) : state.onFire.has(p))).length);
+        if (hotCounts.length >= 2 && Math.max(...hotCounts) - Math.min(...hotCounts) > 1) {
+          penalty += 22;
+        }
+
+        // 4. 2-Apex Absorbs Rookie Rule (Anti-Snowball):
+        //    Whenever one team has MORE Apex (e.g. Predator+Mistake or Predator+Gabbar) than another (e.g. Azzazzil alone),
+        //    the 2-Apex team MUST absorb Katappa/Roni and weak links!
+        if (multiTeams.length >= 2) {
+          const maxMultiApex = Math.max(...multiTeams.map(t => countTier(t, 1)));
+          const minMultiApex = Math.min(...multiTeams.map(t => countTier(t, 1)));
+          const totalRookies = multiTeams.reduce((a, t) => a + countTier(t, 4), 0);
+
+          if (maxMultiApex > minMultiApex) {
+            multiTeams.forEach(t => {
+              const a = countTier(t, 1);
+              const r = countTier(t, 4);
+              const low = t.filter(p => isLowKill(p, fireSet)).length;
+              const topStrikers = t.filter(p => p === 'Master J' || p === 'Shenon').length;
+
+              if (a === maxMultiApex) {
+                if (low === 0) penalty += 85;
+                if (totalRookies > 0 && r === 0) penalty += 70;
+                if (topStrikers >= 2) penalty += 25;
+                if (t.length === Math.min(...multiTeams.map(x => x.length)) && Math.max(...multiTeams.map(x => x.length)) > t.length) {
+                  penalty += 30;
+                }
+              }
+              if (a === minMultiApex && r > 0 && totalRookies === 1) {
+                penalty += 70;
+              }
+            });
+          }
+        }
+
+        // 5. Never stack both Rookies (Katappa + Roni) on the same team
+        const rookieCounts = teams.map(t => countTier(t, 4));
+        if (numTeams >= 2) {
+          rookieCounts.forEach(c => { if (c >= 2) penalty += 80; });
+        }
+
+        // 6. Rookie & Low-Kill Cover Rule
+        const totalMainKillers = teams.flat().filter(p => isMainKiller(p, fireSet)).length;
+        multiTeams.forEach(t => {
+          const r = countTier(t, 4);
+          const a = countTier(t, 1);
+          const killers = t.filter(p => isMainKiller(p, fireSet)).length;
+          const lows = t.filter(p => isLowKill(p, fireSet)).length;
+
+          if (r > 0) {
+            if (a === 0 && apexCounts.some(c => c > 0)) penalty += 35;
+            if (t.length >= 3 && totalMainKillers >= multiTeams.length + 1 && killers < 2) {
+              penalty += 30;
+            }
+          }
+          if (t.length >= 4 && killers <= 1 && lows >= 2) {
+            penalty += 24;
+          }
+        });
+
+        // 7. Solo Slot Rule: Never leave Rookie solo
+        const soloTeam = teams.find(t => t.length === 1 && multiTeams.length >= 1);
+        if (soloTeam) {
+          const st = PLAYER_DATA[soloTeam[0]].tier;
+          if (st === 4) penalty += 95;
+          else if (st === 3 && !(fireSet ? fireSet.has(soloTeam[0]) : state.onFire.has(soloTeam[0]))) penalty += 25;
+        }
+
+        return penalty;
+      }
+
+      function generateBalancedRankTeams(pool, sizes) {
+        const lastSig = state.rankHistory[state.rankHistory.length - 1] || '';
+        const seen = new Map();
+
+        for (let trial = 0; trial < 2500; trial++) {
+          const teams = buildRandomSplit(pool, sizes);
+          const sig = teamSignature(teams);
+          if (seen.has(sig)) continue;
+          const penalty = evaluatePracticalSplit(teams);
+          seen.set(sig, { teams, sig, penalty });
+        }
+
+        const sorted = Array.from(seen.values()).sort((a, b) => a.penalty - b.penalty);
+        const bestPenalty = sorted[0].penalty;
+
+        let topPool = sorted.filter(c => c.penalty <= bestPenalty + 2.0).slice(0, 6);
+        let freshPool = topPool.filter(c => !state.rankHistory.includes(c.sig));
+        if (!freshPool.length) {
+          freshPool = sorted.filter(c => c.sig !== lastSig).slice(0, 4);
+        }
+        const pickFrom = freshPool.length ? freshPool : topPool;
+        const chosen = pickFrom[cryptoRandomInt(pickFrom.length)];
+
+        // Order players inside each team from Tier 1 (Apex) down to Tier 4 (Rookie)
+        const orderedTeams = chosen.teams.map(members =>
+          members.slice().sort((a, b) =>
+            PLAYER_DATA[a].tier - PLAYER_DATA[b].tier || PLAYER_DATA[a].order - PLAYER_DATA[b].order
+          )
+        );
+
+        state.rankHistory.push(chosen.sig);
+        if (state.rankHistory.length > 5) state.rankHistory.shift();
+
+        return { teams: orderedTeams };
+      }
+
+      function formatTierMix(members) {
+        const parts = [];
+        TIER_META.forEach(tm => {
+          const c = members.filter(m => PLAYER_DATA[m].tier === tm.tier).length;
+          if (c > 0) parts.push(`${c} ${tm.short}`);
+        });
+        return parts.join(' • ');
+      }
+
+      function renderGeneratedRankTeams() {
+        const container = document.getElementById('rankResultsContainer');
+        if (!state.generatedRankTeams) {
+          container.classList.add('hidden');
+          return;
+        }
+        container.classList.remove('hidden');
+
+        const { teams, splitLabel } = state.generatedRankTeams;
+        document.getElementById('rankSplitTitle').textContent = `Tier-Balanced (${splitLabel})`;
+
+        const themes = ['t-emerald', 't-cyan', 't-amber', 't-rose', 't-violet', 't-sky'];
+        const grid = document.getElementById('rankCardsGrid');
+        grid.innerHTML = teams.map((members, idx) => {
+          const isSolo = members.length === 1 && teams.some(x => x.length > 1);
+          const title = isSolo ? 'Solo Player' : `Team ${idx + 1}`;
+          const mixText = formatTierMix(members);
+          return `
+            <div class="team-card ${themes[idx % themes.length]}">
+              <div class="team-card-head">
+                <span class="team-badge">${title}</span>
+                <span class="team-count">${members.length} player${members.length === 1 ? '' : 's'}</span>
+              </div>
+              <div class="score-base-bar">
+                <span>Tier Mix: <strong>${mixText}</strong></span>
+              </div>
+              <div class="rank-member-list">
+                ${members.map(name => {
+                  const info = PLAYER_DATA[name];
+                  return `
+                    <div class="rank-member-row">
+                      <div class="rank-member-left">
+                        <span class="member-name">${formatNameHtml(name)}</span>
+                        ${state.onFire.has(name) ? '<span class="fire-tag">🔥 Hot</span>' : ''}
+                      </div>
+                      <span class="tier-pill tp-${info.tier}">${info.label}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('btnRankMax12').addEventListener('click', () => {
+        stopRankTimer();
+        const picked = pickRandom12('lastRankMax12Key');
+        state.rankSelected = new Set(picked);
+        const out = PLAYERS.filter(p => !state.rankSelected.has(p));
+        renderRankTab();
+        showToast(out.length ? `Random 12 picked! Out: ${out.join(', ')}` : 'Random 12 selected!');
+      });
+
+      document.getElementById('btnClearFire').addEventListener('click', () => {
+        stopRankTimer();
+        state.onFire.clear();
+        renderRankTab();
+        showToast('Cleared all 🔥 On Fire boosts');
+      });
+
+      document.getElementById('btnRankClear').addEventListener('click', () => {
+        stopRankTimer();
+        state.rankSelected.clear();
+        state.onFire.clear();
+        state.generatedRankTeams = null;
+        renderRankTab();
+        renderGeneratedRankTeams();
+      });
+
+      document.getElementById('btnGenerateRankTeams').addEventListener('click', () => {
+        const count = state.rankSelected.size;
+        const options = SPLIT_MAP[count] || [];
+        const split = options.find(o => o.key === state.rankSplitKey);
+        if (!split) {
+          showToast('Select 2 to 12 players first');
+          return;
+        }
+        stopRankTimer();
+        const pool = Array.from(state.rankSelected);
+        const result = generateBalancedRankTeams(pool, split.sizes);
+        let ticks = 0;
+        const maxTicks = 7;
+
+        state.rankTimer = setInterval(() => {
+          ticks++;
+          const preview = ticks < maxTicks ? buildRandomSplit(pool, split.sizes) : result.teams;
+          state.generatedRankTeams = {
+            splitLabel: split.label,
+            teams: preview
+          };
+          renderGeneratedRankTeams();
+          if (ticks >= maxTicks) {
+            stopRankTimer();
+            showToast(`Tier-balanced ${split.label} ready!`);
+          }
+        }, 65);
+      });
+
+      document.getElementById('btnCopyRankTeams').addEventListener('click', () => {
+        if (!state.generatedRankTeams) return;
+        const { teams, splitLabel } = state.generatedRankTeams;
+        const lines = [`⭐ NO VETU Rank-Balanced Teams (${splitLabel})`];
+        teams.forEach((members, i) => {
+          const isSolo = members.length === 1 && teams.some(x => x.length > 1);
+          const label = isSolo ? 'Solo' : `Team ${i + 1}`;
+          lines.push(`\n${label} (${formatTierMix(members)}):`);
+          members.forEach(name => {
+            const info = PLAYER_DATA[name];
+            lines.push(`• ${formatNameText(name)}${state.onFire.has(name) ? ' 🔥' : ''} [${info.label}]`);
+          });
+        });
+        copyText(lines.join('\n'), 'Balanced teams copied for WhatsApp!');
+      });
+
+      // Init with randomized display order & initial selections
+      state.spinOrder = shuffle(PLAYERS);
+      state.spinSelected = new Set(state.spinOrder.slice(0, 7));
+      state.teamOrder = shuffle(PLAYERS);
+      state.teamSelected = new Set(state.teamOrder.slice(0, 8));
+      state.rankSelected = new Set(['Azzazzil', 'Gabbar', 'Shenon', 'Master J', 'Veer', 'Boss', 'Katappa', 'Roni']);
+      renderSpinChips();
+      renderSpinResults(false);
+      renderTeamsTab();
+      renderRankTab();
+      // PWA Service Worker & 1-Tap Install Prompt
+      let deferredPrompt = null;
+      const installBtn = document.getElementById('btnInstallPwa');
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (installBtn) installBtn.classList.remove('hidden');
+      });
+      if (installBtn) {
+        installBtn.addEventListener('click', () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(() => {
+            deferredPrompt = null;
+            installBtn.classList.add('hidden');
+          });
+        });
+      }
+      if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js').catch(() => {});
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
